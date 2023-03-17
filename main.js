@@ -1,5 +1,6 @@
 img = "";
 status1 = "";
+objects = [];
 function setup() {
 canvas = createCanvas(640, 420);
 canvas.center();
@@ -11,16 +12,17 @@ img = loadImage("dog_cat.jpg");
 }
 function draw() {
 image(img, 0, 0, 640, 420);
+if (status1 != "") {
+for (i=0; i<objects.length; i++) {
+document.getElementById("status").innerHTML = "Status: Object Detected";
 fill("#FF0000");
-text("Dog", 35, 70);
+percent = floor(objects[i].confidence * 100);
+text(objects[i].label + " " + percent + "%", objects[i].x + 10, objects[i].y + 12);
 noFill();
 stroke("#FF0000");
-rect(30, 50, 350, 400);
-fill("#FF0000");
-text("Cat", 340, 100);
-noFill();
-stroke("#FF0000");
-rect(300, 90, 300, 300);
+rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+}
+}
 }
 function modelLoaded() {
 console.log(" Cocossd Is Initialized");
@@ -33,5 +35,6 @@ console.error(error);
 }
 else {
 console.log(results);
+objects = results;
 }
 }
